@@ -1,0 +1,187 @@
+openapi: '3.0.2'
+info:
+  title: Awesome Todo App
+  version: '1.0'
+  description: |
+    The Awesome Todo App is specially crafted to help you be more awesome. 
+    
+    It tracks your tasks, and gives you dopamine rushes every time you complete one, thereby making your whole day better.
+servers:
+  - url: https://api.server.test/v1
+tags:
+  - name: todoItems
+paths:
+  /items:
+    get:
+      summary: Get all todo items
+      tags:
+        - todoItems
+      operationId: get-todoItems
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/todoItem'
+        '401':
+          $ref: 'common.yaml#/components/responses/authError'
+        '500':
+          $ref: 'common.yaml#/components/responses/serverError'
+      security:
+        - resourceOwner: []
+        - clientCredentials: []
+    post:
+      summary: Create a new todo item
+      tags:
+        - todoItems
+      operationId: post-todoItems
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: itemCreationRequest
+              description: The request to create a new todo item
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                description:
+                  type: string
+                dueDate:
+                  type: string
+                  format: date-time
+              required:
+                - title
+            example:
+              title: Pay bills
+              description: Sydney Water
+              dueDate: '2020-05-04T09:00:00Z'
+      responses:
+        '201':
+          description: Created
+          headers:
+            location:
+              description: Uri describing the todo item GET resource
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/todoItem'
+        '400':
+          $ref: 'common.yaml#/components/responses/badRequest'
+        '401':
+          $ref: 'common.yaml#/components/responses/authError'
+        '500':
+          $ref: 'common.yaml#/components/responses/serverError'
+      security:
+        - resourceOwner: []
+        - clientCredentials: []
+  /items/{itemId}:
+    get:
+      summary: Retrieve a todo item
+      tags:
+        - todoItems
+      operationId: get-todoItems-itemId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/todoItem'
+        '401':
+          $ref: 'common.yaml#/components/responses/authError'
+        '403':
+          $ref: 'common.yaml#/components/responses/forbidden'
+        '404':
+          $ref: 'common.yaml#/components/responses/notFound'
+        '500':
+          $ref: 'common.yaml#/components/responses/serverError'
+      security:
+        - resourceOwner: []
+        - clientCredentials: []
+    put:
+      summary: Update todo item
+      tags:
+        - todoItems
+      operationId: put-todoItems-itemId
+      description: |
+        Update the description, status, or due date of a todo item. The title cannot be updated because _business rules_.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: updateTodoItemRequest
+              type: object
+              description: |
+                Update model for a todo item
+              properties:
+                description:
+                  type: string
+                dueDate:
+                  type: string
+                  format: date-time
+                status:
+                  $ref: '#/components/schemas/todoItemStatus'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: 'common.yaml#/components/responses/badRequest'
+        '401':
+          $ref: 'common.yaml#/components/responses/authError'
+        '403':
+          $ref: 'common.yaml#/components/responses/forbidden'
+        '404':
+          $ref: 'common.yaml#/components/responses/notFound'
+        '500':
+          $ref: 'common.yaml#/components/responses/serverError'
+      security:
+        - resourceOwner: []
+        - clientCredentials: []
+components:
+  securitySchemes:
+    $ref: 'common.yaml#/components/securitySchemes'
+  schemas:
+    todoItemStatus:
+      title: todoItem Status
+      type: string
+      enum: [
+        Incomplete,
+        Complete,
+        Deleted
+      ]
+      example: Complete
+    todoItem:
+      title: todoItem
+      type: object
+      description: |
+        A representation of a todo item
+      properties:
+        itemId:
+          type: integer
+          minimum: 1
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+        dueDate:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/todoItemStatus'
+      example:
+        itemId: 1
+        title: Pay bills
+        description: Sydney Water
+        dueDate: '2020-05-04T09:00:00Z'
+        status: Incomplete
