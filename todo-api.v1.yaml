@@ -7,7 +7,7 @@ info:
     
     It tracks your tasks, and gives you dopamine rushes every time you complete one, thereby making your whole day better.
 servers:
-  - url: https://api.server.test/v1
+  - url: http://localhost:4010
 tags:
   - name: todoItems
 paths:

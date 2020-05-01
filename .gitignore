@@ -272,3 +272,6 @@ samples/NswTitles/NswTitles.xml
 src/apis/Services/InfoTrack.Services/InfoTrack.Services.xml
 src/InfoTrack.Products/InfoTrack.Products.xml
 src/InfoTrack.Services/InfoTrack.Services.xml
+
+.fake
+.ionide
