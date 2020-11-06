@@ -1,5 +1,4 @@
-﻿using System;
-using InfoTrack.Common.Infrastructure;
+﻿using InfoTrack.Common.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +19,7 @@ namespace TodoList.Infrastructure
             services.AddCommonInfrastructure(configuration);
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+                options.UseSqlServer("server=localhost;Database=Todo;IntegratedSecurity=SSPI"));
 
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 
