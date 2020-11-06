@@ -1,6 +1,6 @@
 components:
   securitySchemes:
-    resourceOwner:
+    user:
       description: |
         The standard user bearer token received by all InfoTrack users and commonly stored in a cookie when accessing systems such as Supplier Retailer.
 
@@ -19,7 +19,7 @@ components:
               REQUIRED. Adds the following InfoTrack claims; inf:loginid, inf:username, inf:clientid, inf:branchid, inf:retailerid, inf:email, inf:integkey, inf:subsystem.
             infsec:identity: |
               OPTIONAL. Adds the following InfoTrack claims; inf:partyname, inf:isintegrated.
-    clientCredentials:
+    machine:
       description: |
         A machine-to-machine token issued for background processes needing to contact an API. Has no user credentials and is treated as above most access control checks.
 
@@ -83,6 +83,19 @@ components:
             status: 401
             title: Unauthorized
             detail: Bearer token missing or invalid
+            instance: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+    paymentRequired:
+      description: The client is on credit hold
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            timestamp: 2020-03-17T23:49:27.835Z
+            type: https://httpstatuses.com/402
+            status: 402
+            title: Payment Required
+            detail: Client 123 is on credit hold
             instance: 3fa85f64-5717-4562-b3fc-2c963f66afa6
     forbidden:
       description: The server understood the request but refuses to authorize it.

@@ -24,7 +24,7 @@ namespace TodoList.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplication();
-            services.AddInfrastructure();
+            services.AddInfrastructure(Configuration);
 
             services.AddCommonApi(Configuration, HostEnvironment);
             services.AddCommonSwagger("Todo API", string.Empty, string.Empty);
