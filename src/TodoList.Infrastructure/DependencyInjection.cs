@@ -1,4 +1,5 @@
-﻿using InfoTrack.Common.Infrastructure;
+﻿using System;
+using InfoTrack.Common.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
