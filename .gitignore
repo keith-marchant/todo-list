@@ -276,3 +276,6 @@ src/InfoTrack.Services/InfoTrack.Services.xml
 .ionide/
 .fake
 .ionide
+
+jest-stare/
+coverage/
